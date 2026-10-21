@@ -1,0 +1,26 @@
+duel-already-in-progress: '&8&l« &c&lSH &8&l» &7Un duel est déjà en cours!'
+duel-start: '&8&l« &e&lSH &8&l» &7Début du duel, que le meilleur gagne !'
+you-won: '&8&l« &aVous avez gagné &8&l»'
+you-lost: '&8&l« &cVous avez perdu &8&l»'
+time-out: '&8&l« &cTemps écoulé &8&l»'
+duel-sent: '&8&l« &a&lSH &8&l» &7Duel proposé à &a{player} &7!'
+duel-received: '[{"text":"&8&l« &e&lSH &8&l» &e{player} &fvous a défié en duel !\n&7&o(( Cliquez sur ce message pour accepter ))","clickEvent":{"action":"run_command","value":"/duel {player}"}}]'
+# duel-received: '&8&l« &e&lSH &8&l» &e{player} &7vous a défié en duel !'
+duel-expired: '&8&l« &c&lSH &8&l» &cLa demande de duel a expiré!'
+pos1-set: '&aPosition 1 de l''arène définie!'
+pos2-set: '&aPosition 2 de l''arène définie!'
+duel-ended: '&8&l« &a&lSH &8&l» &aDuel terminé!'
+command-player-only: '&cCette commande est réservée aux joueurs!'
+duel-usage: '&8&l« &c&lSH &8&l» &cUtilisation: /duel <pseudo>'
+admin-usage: '&8&l« &c&lSH &8&l» &cUtilisation: /duel admin <pos1|pos2|end>'
+no-permission: '&8&l« &c&lSH &8&l» &cVous n''avez pas la permission!'
+player-not-found: '&8&l« &c&lSH &8&l» &cJoueur non trouvé!'
+duel-self: '&8&l« &c&lSH &8&l» &cVous ne pouvez pas vous défier vous-même!'
+duel-win-broadcast: "&8&l« &e&lSH &8&l» &e{winner} &7a gagné son duel contre &e{loser} &7!"
+duel-world-change: "&8&l« &c&lSH &8&l» &cChangement de monde détecté&7, duel annulé"
+duel-already-sent: "&8&l« &c&lSH &8&l» &cVous avez déjà une demande de duel en cours. Veuillez attendre qu'elle expire ou soit acceptée avant d'en envoyer une autre."
+duel-actionbar-message: "&eDuel &f&l» &7{time} secondes"
+countdown:
+  3: "&8&l»   &a3   &8&l«"
+  2: "&8&l»  &e2  &8&l«"
+  1: "&8&l» &c1 &8&l«"
