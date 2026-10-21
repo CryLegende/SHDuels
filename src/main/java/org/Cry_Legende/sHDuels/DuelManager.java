@@ -96,9 +96,9 @@ public class DuelManager implements Listener {
         if (player == null || !player.isOnline()) return;
         player.setWalkSpeed(walkSpeed);
         if (!canJump) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, false, false, false), true);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, Integer.MAX_VALUE, 128, false, false, false), true);
         } else {
-            player.removePotionEffect(PotionEffectType.JUMP);
+            player.removePotionEffect(PotionEffectType.JUMP_BOOST);
         }
     }
 
@@ -507,10 +507,10 @@ public class DuelManager implements Listener {
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         player.setFireTicks(0);
-        if (player.hasPotionEffect(PotionEffectType.JUMP)) {
-            PotionEffect jumpEffect = player.getPotionEffect(PotionEffectType.JUMP);
+        if (player.hasPotionEffect(PotionEffectType.JUMP_BOOST)) {
+            PotionEffect jumpEffect = player.getPotionEffect(PotionEffectType.JUMP_BOOST);
             if (jumpEffect != null && jumpEffect.getAmplifier() == 128) {
-                player.removePotionEffect(PotionEffectType.JUMP);
+                player.removePotionEffect(PotionEffectType.JUMP_BOOST);
             }
         }
         if (player.hasPotionEffect(PotionEffectType.BLINDNESS)) {
