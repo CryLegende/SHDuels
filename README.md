@@ -4,7 +4,7 @@
 
 # SHDuels
 
-*Plugin du serveur SkyHand.*
+*Duels 1v1 sur invitation (/duel) dans une arène dédiée, avec commandes bloquées pendant le combat.*
 
 <img src="https://img.shields.io/badge/Paper-26.3-f2a900?style=for-the-badge" alt="Paper 26.3"> <img src="https://img.shields.io/badge/Java-25-e76f00?style=for-the-badge" alt="Java 25"> <img src="https://img.shields.io/badge/SkyHand-Opale-3aa655?style=for-the-badge" alt="SkyHand Opale">
 
@@ -14,7 +14,7 @@
 
 ## Présentation
 
-Plugin du serveur SkyHand.
+Duels 1v1 sur invitation (/duel) dans une arène dédiée, avec commandes bloquées pendant le combat.
 
 Utilisé sur : **Opale**.
 
@@ -26,10 +26,13 @@ Utilisé sur : **Opale**.
 
 ## Configuration
 
-Fichiers par défaut repris du serveur (secrets remplacés par `CHANGE_ME`) :
+Fichiers par défaut repris du serveur (secrets remplacés par `CHANGE_ME`). Cliquez sur un fichier pour l'ouvrir :
 
-- `config.yml`
-- `messages.yml`
+<pre>
+plugins/SHDuels/
+├── <a href="src/main/resources/config.yml">config.yml</a>
+└── <a href="src/main/resources/messages.yml">messages.yml</a>
+</pre>
 
 ## Compilation
 
