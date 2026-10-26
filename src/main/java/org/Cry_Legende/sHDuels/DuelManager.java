@@ -19,6 +19,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -135,6 +136,21 @@ public class DuelManager implements Listener {
         if (p2 != null && p2.isOnline() && pos2 != null) p2.teleport(pos2);
     }
 
+    /** Son lu en config : ancien nom (ENTITY_PLAYER_LEVELUP) ou clé (minecraft:entity.player.levelup). */
+    static Sound sound(String raw) {
+        if (raw == null || raw.isBlank()) return null;
+        String s = raw.trim();
+        if (s.indexOf(':') >= 0 || s.indexOf('.') >= 0) {
+            NamespacedKey key = NamespacedKey.fromString(s.toLowerCase(Locale.ROOT));
+            return key == null ? null : Registry.SOUND_EVENT.get(key);
+        }
+        try {
+            return (Sound) Sound.class.getField(s.toUpperCase(Locale.ROOT)).get(null);
+        } catch (ReflectiveOperationException | ClassCastException e) {
+            return null;
+        }
+    }
+
     private void startActionbarTask() {
         if (actionbarTask != null) {
             actionbarTask.cancel();
@@ -172,7 +188,8 @@ public class DuelManager implements Listener {
         }.runTaskTimer(plugin, 0L, 20L);
     }
 
-    @EventHandler
+    // ignoreCancelled : un dégât annulé par une autre extension (zone sans PvP...) n'a pas eu lieu et ne doit pas terminer le duel
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
@@ -234,14 +251,13 @@ public class DuelManager implements Listener {
                     setMovementAndJump(player1, 0.2f, true);
                     setMovementAndJump(player2, 0.2f, true);
 
-                    try {
-                        String soundName = plugin.getConfig().getString("start-sound", "BLOCK_NOTE_BLOCK_PLING");
-                        Sound startSound = Sound.valueOf(soundName.toUpperCase());
+                    Sound startSound = sound(plugin.getConfig().getString("start-sound", "BLOCK_NOTE_BLOCK_PLING"));
+                    if (startSound != null) {
                         if (player1.isOnline())
                             player1.playSound(player1.getLocation(), startSound, SoundCategory.MASTER, 1.0f, 1.0f);
                         if (player2.isOnline())
                             player2.playSound(player2.getLocation(), startSound, SoundCategory.MASTER, 1.0f, 1.0f);
-                    } catch (IllegalArgumentException e) {
+                    } else {
                         plugin.getLogger().warning("Son de démarrage du duel invalide dans la config: " + plugin.getConfig().getString("start-sound"));
                     }
 
@@ -268,14 +284,13 @@ public class DuelManager implements Listener {
                     if (player1.isOnline()) player1.sendTitle("", countdownMessage, 5, 10, 5);
                     if (player2.isOnline()) player2.sendTitle("", countdownMessage, 5, 10, 5);
 
-                    try {
-                        String soundName = plugin.getConfig().getString("countdown-sound", "BLOCK_NOTE_BLOCK_PLING");
-                        Sound countdownSound = Sound.valueOf(soundName.toUpperCase());
+                    Sound countdownSound = sound(plugin.getConfig().getString("countdown-sound", "BLOCK_NOTE_BLOCK_PLING"));
+                    if (countdownSound != null) {
                         if (player1.isOnline())
                             player1.playSound(player1.getLocation(), countdownSound, SoundCategory.MASTER, 0.8f, 1.0f + (0.2f * (3 - countdown)));
                         if (player2.isOnline())
                             player2.playSound(player2.getLocation(), countdownSound, SoundCategory.MASTER, 0.8f, 1.0f + (0.2f * (3 - countdown)));
-                    } catch (IllegalArgumentException e) {
+                    } else {
                         plugin.getLogger().warning("Son de countdown du duel invalide dans la config: " + plugin.getConfig().getString("countdown-sound"));
                     }
                 }
@@ -401,14 +416,14 @@ public class DuelManager implements Listener {
             setInvincibility(loser, true);
             setMovementAndJump(loser, 0f, false);
 
-            try {
-                String soundName = plugin.getConfig().getString("lose-sound", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
-                Sound loseSound = Sound.valueOf(soundName.toUpperCase());
+            Sound loseSound = sound(plugin.getConfig().getString("lose-sound", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR"));
+            if (loseSound != null) {
                 loser.playSound(loser.getLocation(), loseSound, SoundCategory.MASTER, 1.0f, 0.8f);
-                loser.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 0, false, false, false));
-            } catch (IllegalArgumentException e) {
+            } else {
                 plugin.getLogger().warning("Son de défaite invalide dans la config: " + plugin.getConfig().getString("lose-sound"));
             }
+            // la cécité ne dépend pas du son : un son mal écrit ne doit pas la supprimer
+            loser.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 0, false, false, false));
         }
 
         if (winner != null && loser != null && winner.isOnline() && loser.isOnline()) {
@@ -530,7 +545,10 @@ public class DuelManager implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player disconnectedPlayer = event.getPlayer();
 
-        if (duelState != DuelState.NONE && (disconnectedPlayer.equals(player1) || disconnectedPlayer.equals(player2))) {
+        // Pas pendant la phase de fin (célébration) : le duel est déjà terminé, le rejouer annoncerait l'autre joueur vainqueur.
+        // Le départ est rattrapé à la reconnexion (temp_data.yml).
+        boolean running = duelState == DuelState.PREPARATION || duelState == DuelState.DUELING;
+        if (running && (disconnectedPlayer.equals(player1) || disconnectedPlayer.equals(player2))) {
             plugin.getLogger().info("[Duel] Joueur " + disconnectedPlayer.getName() + " s'est déconnecté pendant un duel (état: " + duelState + ").");
 
             Player winner = null;

@@ -21,7 +21,8 @@ public class SHDuels extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         reloadMessages(); // Charge et traduit les messages
-        reloadTempData();
+        // temp_data.yml (et config.yml) sont lus à la première utilisation : les mondes chargés après onEnable (PhantomWorlds)
+        // sont alors connus, sinon leurs positions seraient lues nulles puis effacées à la prochaine écriture.
 
         duelManager = new DuelManager(this);
         // Enregistre DuelManager UNE SEULE FOIS
@@ -40,8 +41,8 @@ public class SHDuels extends JavaPlugin {
         if (duelManager != null) {
             duelManager.forceEndAllDuels(); // Ajoute cette méthode à DuelManager
         }
-        saveConfig(); // Sauvegarde la config principale (arena positions)
-        saveTempData(); // Sauvegarde les données temporaires (joueurs déconnectés en duel)
+        // Ni saveConfig() ni saveTempData() ici : chaque modification est déjà écrite sur le moment, et réécrire à l'arrêt
+        // effacerait les positions dont le monde n'est pas chargé.
         getLogger().info("SHDuels a été désactivé !");
     }
 
