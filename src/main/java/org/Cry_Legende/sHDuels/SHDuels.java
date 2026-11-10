@@ -11,6 +11,9 @@ import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 public class SHDuels extends JavaPlugin {
@@ -90,6 +93,17 @@ public class SHDuels extends JavaPlugin {
             saveResource("messages.yml", false);
         }
         messages = YamlConfiguration.loadConfiguration(messagesFile);
+        // Un messages.yml d'une version précédente n'a pas les clés ajoutées depuis : elles prennent le texte du jar
+        // (en mémoire seulement, le fichier n'est pas réécrit)
+        InputStream bundled = getResource("messages.yml");
+        if (bundled != null) {
+            YamlConfiguration defaults = YamlConfiguration.loadConfiguration(new InputStreamReader(bundled, StandardCharsets.UTF_8));
+            for (String key : defaults.getKeys(true)) {
+                if (!defaults.isConfigurationSection(key) && !messages.contains(key, true)) {
+                    messages.set(key, defaults.get(key));
+                }
+            }
+        }
         // Traduire les couleurs pour tous les messages une fois chargés
         // pour ne pas avoir à le faire à chaque get.
         for (String key : messages.getKeys(false)) { // false pour ne pas aller en profondeur

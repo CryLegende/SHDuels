@@ -80,7 +80,9 @@ public class CommandDuel implements CommandExecutor {
         DuelNetwork network = plugin.network();
         if (network != null) {
             // L'arène est dans un monde que ce serveur ne fait que copier : le duel se joue sur le serveur qui l'héberge.
-            String arenaHost = network.hostOf(plugin.getConfig().getString("arena.pos1.world"));
+            // arena.pos1 est une position enregistrée (world_key) : le nom du monde se lit sur la position chargée
+            Location arena = plugin.getConfig().getLocation("arena.pos1");
+            String arenaHost = network.hostOf(arena != null && arena.getWorld() != null ? arena.getWorld().getName() : null);
             if (arenaHost != null) {
                 player.sendMessage(plugin.getMessages().getString("duel-arena-elsewhere", "").replace("{server}", arenaHost));
                 return;
