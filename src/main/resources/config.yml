@@ -1,3 +1,19 @@
+# SHDuels
+#
+# Duels 1v1 sur invitation dans l'arène définie par arena.pos1 et arena.pos2 (un seul duel à la fois par serveur).
+# Pendant le duel, seules les commandes de allowed-commands restent utilisables.
+#
+# Commandes :
+#   /duel <joueur>                   Défie un joueur, ou accepte son défi.
+#   /duel admin pos1|pos2            Définit les positions de départ de l'arène à l'endroit où l'on se trouve.
+#   /duel admin end                  Met fin au duel en cours.
+#
+# Permission :
+#   shduels.admin                    /duel admin ... (op par défaut).
+#
+# Les messages sont dans messages.yml. Les positions d'avant-duel sont gardées dans temp_data.yml le temps du duel :
+# un joueur déconnecté pendant le duel y est replacé à sa reconnexion.
+
 duel-invitation-expiry: 30 # secondes
 allowed-commands:
 - /pm
@@ -34,3 +50,10 @@ arena:
 countdown-sound: BLOCK_NOTE_BLOCK_PLING
 start-sound: BLOCK_NOTE_BLOCK_PLING
 lose-sound: ENTITY_ZOMBIE_BREAK_WOODEN_DOOR
+
+# Mode réseau, actif seulement si SHNetwork est installé. Les duels se jouent dans le monde de arena.pos1 et
+# arena.pos2 : sur un serveur qui ne fait que copier ce monde (liste mondes-distants de SHNetwork), /duel répond
+# que le duel se joue sur le serveur de l'arène, et un défi vers un joueur d'un autre serveur répond qu'il n'est pas
+# à portée au lieu de « joueur non trouvé ». Rien à régler : l'hôte de l'arène est lu dans mondes-distants.
+reseau:
+  actif: true

@@ -1,5 +1,6 @@
 package org.Cry_Legende.sHDuels;
 
+import org.Cry_Legende.sHDuels.network.DuelNetwork;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -76,9 +77,23 @@ public class CommandDuel implements CommandExecutor {
     }
 
     private void handleDuelCommands(Player player, String[] args) {
+        DuelNetwork network = plugin.network();
+        if (network != null) {
+            // L'arène est dans un monde que ce serveur ne fait que copier : le duel se joue sur le serveur qui l'héberge.
+            String arenaHost = network.hostOf(plugin.getConfig().getString("arena.pos1.world"));
+            if (arenaHost != null) {
+                player.sendMessage(plugin.getMessages().getString("duel-arena-elsewhere", "").replace("{server}", arenaHost));
+                return;
+            }
+        }
+
         Player targetPlayer = Bukkit.getPlayer(args[0]);
 
         if (targetPlayer == null || !targetPlayer.isOnline()) {
+            if (network != null && network.serverOf(args[0]) != null) {
+                player.sendMessage(plugin.getMessages().getString("duel-other-server", "").replace("{player}", args[0]));
+                return;
+            }
             player.sendMessage(plugin.getMessages().getString("player-not-found"));
             return;
         }

@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -539,6 +540,21 @@ public class DuelManager implements Listener {
         // Les données temporaires ne doivent plus impacter les reconnexions
         // après une restauration effective (fin de duel, arrêt plugin, etc.).
         clearTempPlayerData(playerUUID);
+    }
+
+    /**
+     * Mode réseau : un duelliste qui part vers un autre serveur ne doit pas emporter ses états de duel (vitesse nulle,
+     * saut bloqué, invulnérabilité) : sa sauvegarde les reporterait sur l'autre serveur, où personne ne les retire.
+     * Sur un serveur seul, la reconnexion les nettoie déjà, rien ne change.
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDuelistLeaves(PlayerQuitEvent event) {
+        if (plugin.network() == null || duelState == DuelState.NONE) return;
+        Player leaving = event.getPlayer();
+        if (!leaving.equals(player1) && !leaving.equals(player2)) return;
+        leaving.setInvulnerable(false);
+        leaving.setWalkSpeed(0.2f);
+        leaving.removePotionEffect(PotionEffectType.JUMP_BOOST);
     }
 
     @EventHandler

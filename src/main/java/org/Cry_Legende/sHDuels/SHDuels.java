@@ -1,5 +1,8 @@
 package org.Cry_Legende.sHDuels;
 
+import org.Cry_Legende.sHDuels.network.DuelNetwork;
+import org.Cry_Legende.sHDuels.network.ShNetworkDuels;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,10 +19,12 @@ public class SHDuels extends JavaPlugin {
     private FileConfiguration tempData;
     private File tempDataFile;
     private DuelManager duelManager;
+    private DuelNetwork network;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        enableNetwork();
         reloadMessages(); // Charge et traduit les messages
         // temp_data.yml (et config.yml) sont lus à la première utilisation : les mondes chargés après onEnable (PhantomWorlds)
         // sont alors connus, sinon leurs positions seraient lues nulles puis effacées à la prochaine écriture.
@@ -33,6 +38,27 @@ public class SHDuels extends JavaPlugin {
         // La ligne redondante getServer().getPluginManager().registerEvents(duelManager, this); a été supprimée.
 
         getLogger().info("SHDuels a été activé !");
+    }
+
+    /**
+     * Passe en mode réseau si SHNetwork est installé et 'reseau.actif' est vrai. Les classes qui touchent à SHNetwork
+     * ne sont résolues qu'ici : sans lui, rien n'est chargé et les duels gardent leur fonctionnement d'origine.
+     */
+    private void enableNetwork() {
+        if (!getConfig().getBoolean("reseau.actif", true)) return;
+        if (!Bukkit.getPluginManager().isPluginEnabled("SHNetwork")) return;
+        try {
+            network = ShNetworkDuels.open();
+            getLogger().info("SHNetwork détecté : les duels ne se jouent que sur le serveur qui héberge l'arène.");
+        } catch (RuntimeException | LinkageError e) {
+            network = null;
+            getLogger().log(Level.SEVERE, "SHNetwork présent mais inutilisable, duels locaux à ce serveur : " + e);
+        }
+    }
+
+    /** Pont vers SHNetwork, ou null quand le mode réseau est dormant. */
+    public DuelNetwork network() {
+        return network;
     }
 
     @Override

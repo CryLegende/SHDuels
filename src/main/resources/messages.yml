@@ -24,3 +24,5 @@ countdown:
   3: "&8&l»   &a3   &8&l«"
   2: "&8&l»  &e2  &8&l«"
   1: "&8&l» &c1 &8&l«"
+duel-arena-elsewhere: "&8&l« &6&lSH &8&l» &7Les duels se jouent à l'&6arène du spawn&7 : rends-toi au &6spawn &7pour défier un joueur."
+duel-other-server: "&8&l« &c&lSH &8&l» &c{player} &7n'est pas à portée : les duels se jouent à l'&carène du spawn&7, retrouvez-vous-y."

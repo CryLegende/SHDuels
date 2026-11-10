@@ -24,6 +24,17 @@ Utilisé sur : **Opale**.
 |---|---|---|---|
 | `/duel` | — | Duel command for managing and participating in duels | — |
 
+## Plusieurs serveurs (SHNetwork)
+
+Avec SHNetwork installé et `reseau.actif: true` (valeur par défaut), les duels restent sur le serveur qui héberge l'arène : le monde de `arena.pos1` et `arena.pos2` est celui du spawn, que les autres serveurs ne font que copier (liste `mondes-distants` de SHNetwork).
+
+- Sur un serveur qui ne fait que copier ce monde, `/duel <joueur>` répond que le duel se joue à l'arène du spawn.
+- Un défi vers un joueur connecté sur un autre serveur répond qu'il n'est pas à portée, au lieu de « joueur non trouvé ».
+- Un duelliste qui quitte le serveur en plein duel emporte ses états normaux (vitesse, saut, invulnérabilité), pas ceux du duel.
+- `temp_data.yml` ne vaut que sur le serveur de l'arène : un joueur déconnecté en plein duel y revient (le monde du spawn renvoie vers ce serveur) et y est replacé à sa position d'avant-duel.
+
+Sans SHNetwork, ou avec `reseau.actif: false`, rien ne change.
+
 ## Configuration
 
 Fichiers par défaut repris du serveur (secrets remplacés par `CHANGE_ME`). Cliquez sur un fichier pour l'ouvrir :
