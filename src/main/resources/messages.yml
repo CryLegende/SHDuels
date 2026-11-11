@@ -12,7 +12,6 @@ pos2-set: '&aPosition 2 de l''arène définie!'
 duel-ended: '&8&l« &a&lSH &8&l» &aDuel terminé!'
 command-player-only: '&cCette commande est réservée aux joueurs!'
 duel-usage: '&8&l« &c&lSH &8&l» &cUtilisation: /duel <pseudo>'
-admin-usage: '&8&l« &c&lSH &8&l» &cUtilisation: /duel admin <pos1|pos2|end>'
 no-permission: '&8&l« &c&lSH &8&l» &cVous n''avez pas la permission!'
 player-not-found: '&8&l« &c&lSH &8&l» &cJoueur non trouvé!'
 duel-self: '&8&l« &c&lSH &8&l» &cVous ne pouvez pas vous défier vous-même!'
@@ -26,3 +25,19 @@ countdown:
   1: "&8&l» &c1 &8&l«"
 duel-arena-elsewhere: "&8&l« &6&lSH &8&l» &7Les duels se jouent à l'&6arène du spawn&7 : rends-toi au &6spawn &7pour défier un joueur."
 duel-other-server: "&8&l« &c&lSH &8&l» &c{player} &7n'est pas à portée : les duels se jouent à l'&carène du spawn&7, retrouvez-vous-y."
+
+# Administration (/shduels). Variables : {sous-commandes}, {fichier}, {erreur}, {etat}, {joueurs}, {point}, {position}
+usage-liste: '&7&l« &c&lSH &8&l» &cUtilisation&7 : &c/shduels &7<{sous-commandes}>'
+end-aucun: '&7&l« &c&lSH &8&l» &cAucun duel&7 n''est en cours.'
+reload-ok: '&7&l« &a&lSH &8&l» &7Configuration &arechargée&7.'
+reload-erreur: '&7&l« &c&lSH &8&l» &cRechargement refusé&7 : &c{fichier}&7 est invalide, l''ancienne configuration reste en place. &c{erreur}'
+reload-reseau: '&7&l« &e&lSH &8&l» &7Le réglage &ereseau.actif&7 a changé : il ne sera pris en compte qu''au &eprochain redémarrage&7.'
+status-titre: '&7&l« &e&lSH &8&l» &7Duels'
+status-etat: '&7• État du duel : &e{etat}'
+status-joueurs: '&7• Duellistes : &e{joueurs}'
+status-arene: '&7• Arène {point} : &e{position}'
+arene-invalide: '&cintrouvable ou monde non chargé'
+etat-aucun: 'aucun duel'
+etat-preparation: 'préparation'
+etat-en-cours: 'en cours'
+etat-fin: 'fin du duel'

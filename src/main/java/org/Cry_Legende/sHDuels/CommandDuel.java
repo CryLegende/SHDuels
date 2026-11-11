@@ -50,30 +50,9 @@ public class CommandDuel implements CommandExecutor {
         return true;
     }
 
+    /** Forme historique /duel admin <sous-commande> : mêmes droits et même effet que /shduels. */
     private void handleAdminCommands(Player player, String[] args) {
-        if (!player.hasPermission("shduels.admin")) {
-            player.sendMessage(plugin.getMessages().getString("no-permission"));
-            return;
-        }
-
-        if (args.length < 2) {
-            player.sendMessage(plugin.getMessages().getString("admin-usage"));
-            return;
-        }
-
-        if (args[1].equalsIgnoreCase("pos1")) {
-            setArenaPosition(player.getLocation(), "arena.pos1");
-            player.sendMessage(plugin.getMessages().getString("pos1-set"));
-        } else if (args[1].equalsIgnoreCase("pos2")) {
-            setArenaPosition(player.getLocation(), "arena.pos2");
-            player.sendMessage(plugin.getMessages().getString("pos2-set"));
-        } else if (args[1].equalsIgnoreCase("end")) {
-            // Mettre fin en avance à un duel en cours
-            duelManager.endDuel(null, null); // À définir comment gérer la fin forcée
-            player.sendMessage(plugin.getMessages().getString("duel-ended"));
-        } else {
-            player.sendMessage(plugin.getMessages().getString("admin-usage"));
-        }
+        plugin.admin().run(player, java.util.Arrays.copyOfRange(args, 1, args.length));
     }
 
     private void handleDuelCommands(Player player, String[] args) {
@@ -142,10 +121,5 @@ public class CommandDuel implements CommandExecutor {
 
     private BaseComponent[] parseJsonMessage(String jsonString) {
         return ComponentSerializer.parse(jsonString);
-    }
-
-    private void setArenaPosition(Location location, String path) {
-        plugin.getConfig().set(path, location);
-        plugin.saveConfig();
     }
 }

@@ -22,7 +22,25 @@ Utilisé sur : **Opale**.
 
 | Commande | Alias | Description | Permission |
 |---|---|---|---|
-| `/duel` | — | Duel command for managing and participating in duels | — |
+| `/duel <joueur>` | — | Défie un joueur, ou accepte son défi. | — |
+| `/shduels pos1` | — | Définit la position de départ 1 de l'arène à l'endroit où l'on se trouve. | `shduels.admin.pos1` |
+| `/shduels pos2` | — | Définit la position de départ 2 de l'arène. | `shduels.admin.pos2` |
+| `/shduels end` | — | Met fin au duel en cours (la console peut l'utiliser). | `shduels.admin.end` |
+| `/shduels reload` | — | Relit `config.yml` et `messages.yml`. En cas d'erreur YAML, l'ancienne configuration reste en place et le fichier fautif est indiqué. `reseau.actif` demande un redémarrage. | `shduels.admin.reload` |
+| `/shduels status` | — | Affiche l'état du duel, les duellistes et les positions de l'arène. | `shduels.admin.status` |
+
+L'ancienne forme `/duel admin <pos1|pos2|end|reload|status>` reste acceptée.
+
+## Permissions
+
+| Permission | Description | Par défaut |
+|---|---|---|
+| `shduels.admin` | Toutes les sous-commandes de `/shduels`. | `op` |
+| `shduels.admin.pos1` | `/shduels pos1`. | `op` |
+| `shduels.admin.pos2` | `/shduels pos2`. | `op` |
+| `shduels.admin.end` | `/shduels end`. | `op` |
+| `shduels.admin.reload` | `/shduels reload`. | `op` |
+| `shduels.admin.status` | `/shduels status`. | `op` |
 
 ## Plusieurs serveurs (SHNetwork)
 

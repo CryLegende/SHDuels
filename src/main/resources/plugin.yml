@@ -9,5 +9,34 @@ softdepend:
 
 commands:
   duel:
-    description: Duel command for managing and participating in duels
-    usage: /<command> <arguments>
+    description: Défier un joueur en duel, ou accepter son défi
+    usage: /<command> <joueur>
+  shduels:
+    description: Administration de SHDuels
+    usage: /<command> <pos1|pos2|end|reload|status>
+
+permissions:
+  shduels.admin:
+    description: Toutes les sous-commandes de /shduels
+    default: op
+    children:
+      shduels.admin.pos1: true
+      shduels.admin.pos2: true
+      shduels.admin.end: true
+      shduels.admin.reload: true
+      shduels.admin.status: true
+  shduels.admin.pos1:
+    description: Définir la position de départ 1 de l'arène (/shduels pos1)
+    default: op
+  shduels.admin.pos2:
+    description: Définir la position de départ 2 de l'arène (/shduels pos2)
+    default: op
+  shduels.admin.end:
+    description: Mettre fin au duel en cours (/shduels end)
+    default: op
+  shduels.admin.reload:
+    description: Recharger la configuration (/shduels reload)
+    default: op
+  shduels.admin.status:
+    description: Voir l'état du duel et de l'arène (/shduels status)
+    default: op

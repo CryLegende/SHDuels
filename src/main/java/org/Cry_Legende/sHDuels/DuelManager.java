@@ -40,6 +40,31 @@ public class DuelManager implements Listener {
         this.duelState = DuelState.NONE;
     }
 
+    /** Vrai quand aucun duel n'est en préparation, en cours ou en fin. */
+    public boolean isIdle() {
+        return duelState == DuelState.NONE;
+    }
+
+    /** Clé du texte de l'état du duel dans messages.yml (etat-aucun, etat-preparation, etat-en-cours, etat-fin). */
+    public String stateKey() {
+        return switch (duelState) {
+            case NONE -> "aucun";
+            case PREPARATION -> "preparation";
+            case DUELING -> "en-cours";
+            case END -> "fin";
+        };
+    }
+
+    /** Les duellistes du duel en cours (vide s'il n'y en a pas). */
+    public List<Player> duelists() {
+        List<Player> list = new java.util.ArrayList<>();
+        if (duelState != DuelState.NONE) {
+            if (player1 != null) list.add(player1);
+            if (player2 != null) list.add(player2);
+        }
+        return list;
+    }
+
     public void startDuel(Player p1, Player p2) {
         if (duelState != DuelState.NONE) {
             String alreadyInProgressMsg = plugin.getMessages().getString("duel-already-in-progress");

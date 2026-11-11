@@ -4,17 +4,33 @@
 # Pendant le duel, seules les commandes de allowed-commands restent utilisables.
 #
 # Commandes :
-#   /duel <joueur>                   Défie un joueur, ou accepte son défi.
-#   /duel admin pos1|pos2            Définit les positions de départ de l'arène à l'endroit où l'on se trouve.
-#   /duel admin end                  Met fin au duel en cours.
+#   /duel <joueur>        Défie un joueur, ou accepte son défi.
+#   /shduels pos1|pos2    Définit les positions de départ de l'arène à l'endroit où l'on se trouve.
+#   /shduels end          Met fin au duel en cours (la console peut l'utiliser).
+#   /shduels reload       Relit config.yml et messages.yml (la console peut l'utiliser). Appliqué au prochain duel ou à la
+#                         prochaine commande ; le duel en cours garde ses durées. En cas d'erreur YAML, l'ancienne
+#                         configuration reste en place et le fichier fautif est indiqué. reseau.actif demande un redémarrage.
+#   /shduels status       Affiche l'état du duel, les duellistes et les positions de l'arène (la console peut l'utiliser).
+#   /duel admin <pos1|pos2|end|reload|status> reste accepté comme ancienne forme de /shduels.
 #
-# Permission :
-#   shduels.admin                    /duel admin ... (op par défaut).
+# Permissions :
+#   shduels.admin          Toutes les sous-commandes de /shduels (par défaut : op).
+#   shduels.admin.pos1     /shduels pos1 (par défaut : op).
+#   shduels.admin.pos2     /shduels pos2 (par défaut : op).
+#   shduels.admin.end      /shduels end (par défaut : op).
+#   shduels.admin.reload   /shduels reload (par défaut : op).
+#   shduels.admin.status   /shduels status (par défaut : op).
 #
 # Les messages sont dans messages.yml. Les positions d'avant-duel sont gardées dans temp_data.yml le temps du duel :
 # un joueur déconnecté pendant le duel y est replacé à sa reconnexion.
+# Les positions arena.pos1 et arena.pos2 sont écrites par /shduels pos1 et pos2 : ne pas les éditer à la main.
 
 duel-invitation-expiry: 30 # secondes
+# Réglages facultatifs, valeur indiquée par défaut si la ligne est absente :
+# duel-duration-seconds: 300           # durée maximale d'un duel, en secondes
+# countdown-duration: 5                # compte à rebours avant le début, en secondes
+# duel-win-broadcast-radius: 50.0      # rayon, en blocs, de l'annonce de la victoire
+# duel-end-teleport-delay-ticks: 60    # délai avant le retour des duellistes à leur position d'avant-duel
 allowed-commands:
 - /pm
 - /mp
