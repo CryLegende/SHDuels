@@ -32,37 +32,26 @@ duel-invitation-expiry: 30 # secondes
 # duel-win-broadcast-radius: 50.0      # rayon, en blocs, de l'annonce de la victoire
 # duel-end-teleport-delay-ticks: 60    # délai avant le retour des duellistes à leur position d'avant-duel
 allowed-commands:
-- /pm
-- /mp
-- /m
 - /msg
-- /mess
-- /message
-- /t
 - /tell
 - /r
-- /reply
-- /spray
-- /sprays
-- /tag
-- /tags
 arena:
   pos1:
     ==: org.bukkit.Location
-    world: spawn
-    x: -45.5
-    y: 53.0
-    z: 1.5
-    pitch: 0.6774367
-    yaw: 86.11347
+    world: world
+    x: 0.5
+    y: 64.0
+    z: 0.5
+    pitch: 0.0
+    yaw: 90.0
   pos2:
     ==: org.bukkit.Location
-    world: spawn
-    x: -75.5
-    y: 52.0
-    z: 3.5
-    pitch: -1.1454737
-    yaw: -94.05096
+    world: world
+    x: 20.5
+    y: 64.0
+    z: 0.5
+    pitch: 0.0
+    yaw: -90.0
 countdown-sound: BLOCK_NOTE_BLOCK_PLING
 start-sound: BLOCK_NOTE_BLOCK_PLING
 lose-sound: ENTITY_ZOMBIE_BREAK_WOODEN_DOOR
